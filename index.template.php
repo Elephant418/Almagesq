@@ -57,7 +57,10 @@
     <div class="container">
       <?php
         foreach ( $almagesq->patterns as $pattern ):
-          echo '<iframe src="iframe.php?menu[]=' . $almagesq->current_menus[ 0 ] . '&amp;menu[]=' . $almagesq->current_menus[ 1 ] . '&amp;pattern=' . $pattern . '">';
+      ?>
+        <iframe src="iframe.php?menu[]=<?= $almagesq->current_menus[ 0 ] ?>&amp;menu[]=<?= $almagesq->current_menus[ 1 ] ?>&amp;pattern=<?= $pattern ?>">
+        </iframe>
+      <?php  
         endforeach;
       ?>
     </div>
