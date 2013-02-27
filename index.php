@@ -1,9 +1,9 @@
 <?php
 
-require_once( 'common.php' );
+require_once( __DIR__ . '/inc/common.php' );
 
 // Render
-require( __DIR__ . '/index.template.php' );
+require( __DIR__ . '/inc/index.template.php' );
 
 
 ?>

@@ -46,7 +46,7 @@ class Almagesq {
 	  CONSTRUCTOR METHODS				   
 	 *************************************************************************/
 	public function __construct( ) {
-		$this->pattern_path = __DIR__ . '/' . static::PATTERN_FOLDER;
+		$this->pattern_path = __DIR__ . '/../' . static::PATTERN_FOLDER;
 		$this->menus = UFIle::folderTree( $this->pattern_path, '*.html', static::MAX_DEPTH, UFile::FILE_FLAG );
 		$this->current_menus = $this->get_current_menus( );
 		$this->patterns = $this->get_patterns( );
