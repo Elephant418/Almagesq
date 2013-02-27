@@ -12,6 +12,7 @@ class UFile {
 			foreach ( $files as $file ) {
 				$tree[ ] = basename( $file );
 			}
+			sort( $tree );
 		}
 
 		return $tree;

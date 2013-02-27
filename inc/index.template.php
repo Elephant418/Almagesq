@@ -58,6 +58,12 @@
       <?php
         foreach ( $almagesq->patterns as $pattern ):
           $patternName = substr( $pattern, 0, strpos( $pattern, '.' ) );
+          if ( strpos( $patternName, '-' ) !== FALSE ) {
+            $prefix = substr( $patternName, 0, strpos( $patternName, '-' ) );
+            if ( is_numeric( $prefix ) ) {
+              $patternName = substr( $patternName, strlen( $prefix ) + 1 );
+            }
+          }
           $patternHumanName = ucfirst( str_replace( '_', ' ', $patternName ) );
       ?>
         <div class="pattern" id="<?= $patternName ?>">
