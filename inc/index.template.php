@@ -84,7 +84,7 @@
           <div class="pattern__title">
             <a href="#<?= $patternName ?>" class="pattern__link pattern__link--anchor">#</a>
             <?= $patternHumanName ?>
-            <a href="#<?= $patternName ?>_code" class="pattern__link pattern__link--code pull-right">Afficher le code source</a>
+            <a href="#<?= $patternName ?>_code" class="pattern__link pattern__link--code pull-right">Show the source code</a>
           </div>
           <div class="pattern__demo">
             <iframe src="iframe.php<?= $almagesq->getHttpQuery( ) ?>&amp;pattern=<?= $pattern ?>">
@@ -103,10 +103,10 @@
       $(function( ){
         $( '.pattern__code' ).hide( );
         $( '.pattern__link--code' ).click( function( ) {
-          if ( $( this.href.substring( this.href.indexOf('#') ) ).toggle( ).height == 0 ) {
-            $( this ).html( 'Afficher le code source' );
+          if ( $( this.href.substring( this.href.indexOf('#') ) ).toggle( ).is(':hidden') ) {
+            $( this ).html( 'Show the source code' );
           } else {
-            $( this ).html( 'Cacher le code source' );
+            $( this ).html( 'Hide the source code' );
           }
           return false;
         });
