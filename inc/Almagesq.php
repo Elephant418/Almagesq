@@ -42,14 +42,17 @@ class Almagesq {
 	/*************************************************************************
 	  PUBLIC METHODS				   
 	 *************************************************************************/
-	public function getCurrentPatternPath( ) {
-		$path = $this->patternPath . '/' . implode( $this->currentMenus, '/' ) . '/' . $this->currentPattern;
+	public function getPatternPath( $pattern ) {
+		$path = $this->patternPath . '/' . implode( $this->currentMenus, '/' ) . '/' . $pattern;
 		return realpath( $path );
 	}
-	public function getCurrentPatternHtml( ) {
-		if ( $path = $this->getCurrentPatternPath( ) ) {
+	public function getPatternHtml( $pattern ) {
+		if ( $path = $this->getPatternPath( $pattern ) ) {
 			return file_get_contents( $path );
 		}
+	}
+	public function getCurrentPatternHtml( ) {
+		return $this->getPatternHtml( $this->currentPattern );
 	}
 	public function getTitle( ) {
 		$title = 'Style Guide';
@@ -116,20 +119,15 @@ class Almagesq {
 	  CONSTRUCTOR METHODS				   
 	 *************************************************************************/
 	public function __construct( ) {
-		$this->themes = $this->getThemes( );
-		$this->settings = $this->getSettings( );
-		$this->patternPath = $this->getPatternPath( );
+		$this->themes = $this->initThemes( );
+		$this->settings = $this->initSettings( );
+		$this->patternPath = $this->initPatternPath( );
 		$this->menus = UFIle::folderTree( $this->patternPath, '*.html', static::MAX_DEPTH, UFile::FILE_FLAG );
-		$this->currentMenus = $this->getCurrentMenus( );
-		$this->patterns = $this->getPatterns( );
-		$this->currentPattern = $this->getCurrentPattern( );
+		$this->currentMenus = $this->initCurrentMenus( );
+		$this->patterns = $this->initPatterns( );
+		$this->currentPattern = $this->initCurrentPattern( );
 	}
-
-
-	/*************************************************************************
-	  PROTECTED METHODS				   
-	 *************************************************************************/
-	protected function getThemes( ) {
+	protected function initThemes( ) {
 		$themes = \UFile::fileList( __DIR__ . static::USER_SETTINGS_PATH, '*.ini' );
 		if ( empty( $themes ) ) {
 			if ( ! $themes = realpath( __DIR__ . static::SETTINGS_PATH . '/default.ini' ) ) {
@@ -144,12 +142,7 @@ class Almagesq {
 		}
 		return $themes;
 	}
-
-	protected function isThemeExist( $theme ) {
-		return in_array( $theme, array_keys( $this->themes ) );
-	}
-
-	protected function getSettings( ) {
+	protected function initSettings( ) {
 		if ( is_array( $this->themes ) ) {
 			if ( isset( $_GET[ 'theme' ] ) && $this->isThemeExist( $_GET[ 'theme' ] ) ) {
 				$this->setCurrentTheme( $_GET[ 'theme' ] );
@@ -163,20 +156,7 @@ class Almagesq {
 		}
 		return $settings;
 	}
-
-	protected function setCurrentTheme( $theme ) {
-		$this->currentTheme = $theme;
-	}
-
-	protected function issetCurrentTheme( ) {
-		return ( isset( $this->currentTheme ) );
-	}
-
-	protected function setDefaultCurrentTheme( ) {
-		$this->setCurrentTheme( key( $this->themes ) );
-	}
-
-	protected function getPatternPath( ) {
+	protected function initPatternPath( ) {
 		$basePath = __DIR__ . '/..';
 		$patternPath = $basePath . '/pattern';
 		if ( isset( $this->settings[ 'pattern_path' ] ) ) {
@@ -188,8 +168,7 @@ class Almagesq {
 		}
 		return $patternPath;
 	}
-
-	protected function getCurrentMenus( ) {
+	protected function initCurrentMenus( ) {
 		$currentMenus = array( );
 		if ( isset( $_GET[ 'menu' ] ) && is_array( $_GET[ 'menu' ] ) ) {
 			$currentMenus = array_values( $_GET[ 'menu' ] );
@@ -206,7 +185,35 @@ class Almagesq {
 		$currentMenus = array_pad( $currentMenus, static::MAX_DEPTH, NULL );
 		return $currentMenus;
 	}
+	protected function initPatterns( ) {
+		$patterns = $this->getSubmenu( $this->currentMenus );
+		if ( ! static::hasPatterns( $patterns ) ) {
+			$patterns = array( );
+		}
+		return $patterns;
+	}
+	protected function initCurrentPattern( ) {
+		if ( ! empty( $this->patterns ) && isset( $_GET[ 'pattern' ] ) && in_array( $_GET[ 'pattern' ], $this->patterns ) ) {
+			return $_GET[ 'pattern' ];
+		}
+	}
 
+
+	/*************************************************************************
+	  PROTECTED METHODS				   
+	 *************************************************************************/
+	protected function isThemeExist( $theme ) {
+		return in_array( $theme, array_keys( $this->themes ) );
+	}
+	protected function setCurrentTheme( $theme ) {
+		$this->currentTheme = $theme;
+	}
+	protected function issetCurrentTheme( ) {
+		return ( isset( $this->currentTheme ) );
+	}
+	protected function setDefaultCurrentTheme( ) {
+		$this->setCurrentTheme( key( $this->themes ) );
+	}
 	protected function getSubmenu( $keys ) {
 		$submenus = $this->menus;
 		foreach ( $keys as $menu ) {
@@ -218,19 +225,6 @@ class Almagesq {
 		return $submenus;
 	}
 
-	protected function getPatterns( ) {
-		$patterns = $this->getSubmenu( $this->currentMenus );
-		if ( ! static::hasPatterns( $patterns ) ) {
-			$patterns = array( );
-		}
-		return $patterns;
-	}
-
-	protected function getCurrentPattern( ) {
-		if ( ! empty( $this->patterns ) && isset( $_GET[ 'pattern' ] ) && in_array( $_GET[ 'pattern' ], $this->patterns ) ) {
-			return $_GET[ 'pattern' ];
-		}
-	}
 }
 
 ?>

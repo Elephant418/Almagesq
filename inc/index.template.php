@@ -82,29 +82,41 @@
       ?>
         <div class="pattern" id="<?= $patternName ?>">
           <div class="pattern__title">
-            <a href="#<?= $patternName ?>" class="pattern__link">#</a>
+            <a href="#<?= $patternName ?>" class="pattern__link pattern__link--anchor">#</a>
             <?= $patternHumanName ?>
+            <a href="#<?= $patternName ?>_code" class="pattern__link pattern__link--code pull-right">Afficher le code source</a>
           </div>
           <div class="pattern__demo">
             <iframe src="iframe.php<?= $almagesq->getHttpQuery( ) ?>&amp;pattern=<?= $pattern ?>">
             </iframe>
           </div>
-          <div class="pattern_code"></div>
+          <div class="pattern__code" id="<?= $patternName ?>_code">
+            <pre><code><?= htmlentities( $almagesq->getPatternHtml( $pattern ) ) ?></code></pre>
+          </div>
         </div>
       <?php  
         endforeach;
       ?>
     </div>
-    <script>
-      var iframes = document.getElementsByTagName( 'iframe' );
-      for ( var i in iframes ) {
-        iframes[ i ].onload = function( ) {
-          console.dir( this.contentWindow );
-          this.style.height = this.contentWindow.document.body.clientHeight + 'px';
-        }
-      }
-    </script>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+    <script>
+      $(function( ){
+        $( '.pattern__code' ).hide( );
+        $( '.pattern__link--code' ).click( function( ) {
+          if ( $( this.href.substring( this.href.indexOf('#') ) ).toggle( ).height == 0 ) {
+            $( this ).html( 'Afficher le code source' );
+          } else {
+            $( this ).html( 'Cacher le code source' );
+          }
+          return false;
+        });
+        $( 'iframe' ).each( function( ) {
+          this.onload = function( ) {
+            this.style.height = this.contentWindow.document.body.clientHeight + 'px';
+          }
+        });
+      });
+    </script>
     <script src="js/bootstrap.js"></script>
   </body>
 </html>
