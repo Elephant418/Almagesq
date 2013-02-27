@@ -73,7 +73,7 @@ class Almagesq {
 	  CONSTRUCTOR METHODS				   
 	 *************************************************************************/
 	public function __construct( ) {
-		$this->settings = parse_ini_file( __DIR__ . '/../conf/settings.ini' );
+		$this->settings = $this->getSettings( );
 		$this->patternPath = $this->getPatternPath( );
 		$this->menus = UFIle::folderTree( $this->patternPath, '*.html', static::MAX_DEPTH, UFile::FILE_FLAG );
 		$this->currentMenus = $this->getCurrentMenus( );
@@ -85,6 +85,18 @@ class Almagesq {
 	/*************************************************************************
 	  PROTECTED METHODS				   
 	 *************************************************************************/
+	protected function getSettings( ) {
+		$confDir = __DIR__ . '/../settings';
+		if ( ! $settingsFile = realpath( $confDir . '/user.ini' ) ) {
+			if ( ! $settingsFile = realpath( $confDir . '/default.ini' ) ) {
+				echo 'Settings file not found :\'(';
+				die;
+			}
+		}
+		$settings = parse_ini_file( $settingsFile );
+		return $settings;
+	}
+
 	protected function getPatternPath( ) {
 		$basePath = __DIR__ . '/..';
 		$patternPath = $basePath . '/pattern';
@@ -93,7 +105,7 @@ class Almagesq {
 		}
 		if ( ! $patternPath = realpath( $patternPath ) ) {
 			echo 'Pattern folder not found :\'(';
-				die;
+			die;
 		}
 		return $patternPath;
 	}
