@@ -13,30 +13,34 @@ class Almagesq {
 	/*************************************************************************
 	  ATTRIBUTES		   
 	 *************************************************************************/
-	public $pattern_path;
+	public $patternPath;
 	public $menus = array( );
-	public $current_menus = array( );
+	public $currentMenus = array( );
 	public $patterns = array( );
-	public $current_pattern;
+	public $currentPattern;
+	public $resources;
 
 
 	/*************************************************************************
 	  STATIC METHODS				   
 	 *************************************************************************/
-	public static function has_patterns( $menu ) {
+	public static function hasPatterns( $menu ) {
 		return ( is_array( $menu ) && ! empty( $menu ) && is_numeric( current( array_keys( $menu ) ) ) );
+	}
+	public static function getStyles( ) {
+		//resource.ini
 	}
 
 
 	/*************************************************************************
 	  PUBLIC METHODS				   
 	 *************************************************************************/
-	public function get_current_pattern_path( ) {
-		$path = $this->pattern_path . '/' . implode( $this->current_menus, '/' ) . '/' . $this->current_pattern;
+	public function getCurrentPatternPath( ) {
+		$path = $this->patternPath . '/' . implode( $this->currentMenus, '/' ) . '/' . $this->currentPattern;
 		return realpath( $path );
 	}
-	public function get_current_pattern_html( ) {
-		if ( $path = $this->get_current_pattern_path( ) ) {
+	public function getCurrentPatternHtml( ) {
+		if ( $path = $this->getCurrentPatternPath( ) ) {
 			return file_get_contents( $path );
 		}
 	}
@@ -46,36 +50,37 @@ class Almagesq {
 	  CONSTRUCTOR METHODS				   
 	 *************************************************************************/
 	public function __construct( ) {
-		$this->pattern_path = __DIR__ . '/../' . static::PATTERN_FOLDER;
-		$this->menus = UFIle::folderTree( $this->pattern_path, '*.html', static::MAX_DEPTH, UFile::FILE_FLAG );
-		$this->current_menus = $this->get_current_menus( );
-		$this->patterns = $this->get_patterns( );
-		$this->current_pattern = $this->get_current_pattern( );
+		$this->patternPath = __DIR__ . '/../' . static::PATTERN_FOLDER;
+		$this->menus = UFIle::folderTree( $this->patternPath, '*.html', static::MAX_DEPTH, UFile::FILE_FLAG );
+		$this->currentMenus = $this->getCurrentMenus( );
+		$this->patterns = $this->getPatterns( );
+		$this->currentPattern = $this->getCurrentPattern( );
+		$this->resources = parse_ini_file( __DIR__ . '/../conf/resource.ini' );
 	}
 
 
 	/*************************************************************************
 	  PROTECTED METHODS				   
 	 *************************************************************************/
-	protected function get_current_menus( ) {
-		$current_menus = array( );
+	protected function getCurrentMenus( ) {
+		$currentMenus = array( );
 		if ( isset( $_GET[ 'menu' ] ) && is_array( $_GET[ 'menu' ] ) ) {
-			$current_menus = array_values( $_GET[ 'menu' ] );
+			$currentMenus = array_values( $_GET[ 'menu' ] );
 		}
 		$menus = $this->menus;
-		foreach ( $current_menus as $key => $current_menu ) {
-			if ( empty( $current_menu ) || ! in_array( $current_menu, array_keys( $menus ) ) ) {
-				unset( $current_menus[ $key ] );
+		foreach ( $currentMenus as $key => $currentMenu ) {
+			if ( empty( $currentMenu ) || ! in_array( $currentMenu, array_keys( $menus ) ) ) {
+				unset( $currentMenus[ $key ] );
 				$menus = array( );
 			} else {
-				$menus =& $menus[ $current_menu ];
+				$menus =& $menus[ $currentMenu ];
 			}
 		}
-		$current_menus = array_pad( $current_menus, static::MAX_DEPTH, NULL );
-		return $current_menus;
+		$currentMenus = array_pad( $currentMenus, static::MAX_DEPTH, NULL );
+		return $currentMenus;
 	}
 
-	protected function get_submenu( $keys ) {
+	protected function getSubmenu( $keys ) {
 		$submenus = $this->menus;
 		foreach ( $keys as $menu ) {
 			if ( is_null( $menu ) ) {
@@ -86,15 +91,15 @@ class Almagesq {
 		return $submenus;
 	}
 
-	protected function get_patterns( ) {
-		$patterns = $this->get_submenu( $this->current_menus );
-		if ( ! static::has_patterns( $patterns ) ) {
+	protected function getPatterns( ) {
+		$patterns = $this->getSubmenu( $this->currentMenus );
+		if ( ! static::hasPatterns( $patterns ) ) {
 			$patterns = array( );
 		}
 		return $patterns;
 	}
 
-	protected function get_current_pattern( ) {
+	protected function getCurrentPattern( ) {
 		if ( ! empty( $this->patterns ) && isset( $_GET[ 'pattern' ] ) && in_array( $_GET[ 'pattern' ], $this->patterns ) ) {
 			return $_GET[ 'pattern' ];
 		}

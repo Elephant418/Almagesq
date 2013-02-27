@@ -17,28 +17,28 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </a>
-          <a href="index.php" class="brand <?= ( $almagesq->current_menus[ 0 ] === NULL ? 'active' : '' )?>">Style Guide</a>
+          <a href="index.php" class="brand <?= ( $almagesq->currentMenus[ 0 ] === NULL ? 'active' : '' )?>">Style Guide</a>
           <div class="nav-collapse collapse">
             <ul class="nav">
               <?php 
                 foreach ( $almagesq->menus as $menu => $submenus ): 
-                  $is_menu_active = ( $almagesq->current_menus[ 0 ] == $menu );
-                  if ( empty( $submenus ) || Almagesq::has_patterns( $submenus ) ): 
+                  $isMenuActive = ( $almagesq->currentMenus[ 0 ] == $menu );
+                  if ( empty( $submenus ) || Almagesq::hasPatterns( $submenus ) ): 
               ?>
-                  <li class="<?= ( $is_menu_active ? 'active' : '' )?>">
+                  <li class="<?= ( $isMenuActive ? 'active' : '' )?>">
                     <a href="?menu[]=<?= $menu ?>"><?= ucfirst( $menu ) ?></a>
                   </li>
                 <?php else: ?>
-                  <li class="dropdown <?= ( $is_menu_active ? 'active' : '' )?>">
+                  <li class="dropdown <?= ( $isMenuActive ? 'active' : '' )?>">
                     <a href="?menu[]=<?= $menu ?>" class="dropdown-toggle" data-toggle="dropdown">
                       <?= ucfirst( $menu ) ?> <b class="caret"></b>
                     </a>
                     <ul class="dropdown-menu">
                       <?php 
                         foreach ( array_keys( $submenus ) as $submenu ): 
-                        $is_submenu_active = ( $is_menu_active && $almagesq->current_menus[ 1 ] == $submenu );
+                        $isSubmenuActive = ( $isMenuActive && $almagesq->currentMenus[ 1 ] == $submenu );
                       ?> 
-                        <li class="<?= ( $is_submenu_active ? 'active' : '' )?>">
+                        <li class="<?= ( $isSubmenuActive ? 'active' : '' )?>">
                           <a href="?menu[]=<?= $menu ?>&amp;menu[]=<?= $submenu ?>"><?= ucfirst( $submenu ) ?></a>
                         </li>
                       <?php endforeach; ?> 
@@ -58,7 +58,7 @@
       <?php
         foreach ( $almagesq->patterns as $pattern ):
       ?>
-        <iframe src="iframe.php?menu[]=<?= $almagesq->current_menus[ 0 ] ?>&amp;menu[]=<?= $almagesq->current_menus[ 1 ] ?>&amp;pattern=<?= $pattern ?>">
+        <iframe src="iframe.php?menu[]=<?= $almagesq->currentMenus[ 0 ] ?>&amp;menu[]=<?= $almagesq->currentMenus[ 1 ] ?>&amp;pattern=<?= $pattern ?>">
         </iframe>
       <?php  
         endforeach;

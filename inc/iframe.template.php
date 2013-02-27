@@ -7,6 +7,6 @@
     <link rel="stylesheet" href="css/bootstrap.min.css">
   </head>
   <body>
-    <?= $almagesq->get_current_pattern_html( ) ?>
+    <?= $almagesq->getCurrentPatternHtml( ) ?>
   </body>
 </html>
