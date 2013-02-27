@@ -4,9 +4,14 @@
     <meta charset="utf-8">
     <title>Almagesq - Your pattern style guide</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <?php foreach ( $almagesq->getStyles( ) as $style ) : ?>
+    	<link rel="stylesheet" href="<?= $style ?>">
+    <?php endforeach; ?>
   </head>
   <body>
     <?= $almagesq->getCurrentPatternHtml( ) ?>
+    <?php foreach ( $almagesq->getScripts( ) as $script ) : ?>
+    	<script src="<?= $script ?>"></script>
+    <?php endforeach; ?>
   </body>
 </html>

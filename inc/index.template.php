@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Almagesq - Your pattern style guide</title>
+    <title><?= $almagesq->getTitle( ) ?> - style guide</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/bootstrap-responsive.min.css">
@@ -17,7 +17,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </a>
-          <a href="index.php" class="brand <?= ( $almagesq->currentMenus[ 0 ] === NULL ? 'active' : '' )?>">Style Guide</a>
+          <a href="index.php" class="brand <?= ( $almagesq->currentMenus[ 0 ] === NULL ? 'active' : '' )?>"><?= $almagesq->getTitle( ) ?></a>
           <div class="nav-collapse collapse">
             <ul class="nav">
               <?php 
@@ -58,8 +58,14 @@
       <?php
         foreach ( $almagesq->patterns as $pattern ):
       ?>
-        <iframe src="iframe.php?menu[]=<?= $almagesq->currentMenus[ 0 ] ?>&amp;menu[]=<?= $almagesq->currentMenus[ 1 ] ?>&amp;pattern=<?= $pattern ?>">
-        </iframe>
+        <div class="pattern">
+          <div class="pattern__title"><?= ucfirst( substr( $pattern, 0, strpos( $pattern, '.' ) ) ) ?></div>
+          <div class="pattern__demo">
+            <iframe src="iframe.php?menu[]=<?= $almagesq->currentMenus[ 0 ] ?>&amp;menu[]=<?= $almagesq->currentMenus[ 1 ] ?>&amp;pattern=<?= $pattern ?>">
+            </iframe>
+          </div>
+          <div class="pattern_code"></div>
+        </div>
       <?php  
         endforeach;
       ?>

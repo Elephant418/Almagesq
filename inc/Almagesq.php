@@ -27,9 +27,6 @@ class Almagesq {
 	public static function hasPatterns( $menu ) {
 		return ( is_array( $menu ) && ! empty( $menu ) && is_numeric( current( array_keys( $menu ) ) ) );
 	}
-	public static function getStyles( ) {
-		//resource.ini
-	}
 
 
 	/*************************************************************************
@@ -43,6 +40,33 @@ class Almagesq {
 		if ( $path = $this->getCurrentPatternPath( ) ) {
 			return file_get_contents( $path );
 		}
+	}
+	public function getTitle( ) {
+		$title = 'Style Guide';
+		if ( isset( $this->resources[ 'title' ] ) ) {
+			$title = $this->resources[ 'title' ];
+		}
+		return $title;
+	}
+	public function getStyles( ) {
+		$styles = array( );
+		if ( isset( $this->resources[ 'styles' ] ) ) {
+			$styles = $this->resources[ 'styles' ];
+			if ( ! is_array( $styles ) ) {
+				$styles = array( $styles );
+			}
+		}
+		return $styles;
+	}
+	public function getScripts( ) {
+		$scripts = array( );
+		if ( isset( $this->resources[ 'scripts' ] ) ) {
+			$scripts = $this->resources[ 'scripts' ];
+			if ( ! is_array( $scripts ) ) {
+				$scripts = array( $scripts );
+			}
+		}
+		return $scripts;
 	}
 
 
