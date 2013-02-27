@@ -7,6 +7,8 @@ class Almagesq {
 	  CONSTANTS
 	 *************************************************************************/
 	const MAX_DEPTH = 2;
+	const SETTINGS_PATH = '/../settings';
+	const USER_SETTINGS_PATH = '/../settings/user';
 
 
 	/*************************************************************************
@@ -17,6 +19,7 @@ class Almagesq {
 	public $currentMenus = array( );
 	public $patterns = array( );
 	public $currentPattern;
+	public $themes = [ ];
 	public $settings;
 
 
@@ -25,6 +28,13 @@ class Almagesq {
 	 *************************************************************************/
 	public static function hasPatterns( $menu ) {
 		return ( is_array( $menu ) && ! empty( $menu ) && is_numeric( current( array_keys( $menu ) ) ) );
+	}
+	public static function FileHumanName( $file ) {
+		$fileName = ucfirst( str_replace( '_', ' ', basename( $file ) ) );
+		if ( $pos = strpos( $fileName, '.' ) ) {
+			$fileName = substr( $fileName, 0, $pos );
+		}
+		return $fileName;
 	}
 
 
@@ -67,12 +77,16 @@ class Almagesq {
 		}
 		return $scripts;
 	}
+	public function getCurrentMenuHttpQuery( ) {
+		return 'menu[]=' . $this->currentMenus[ 0 ] . '&amp;menu[]=' . $this->currentMenus[ 1 ];
+	}
 
 
 	/*************************************************************************
 	  CONSTRUCTOR METHODS				   
 	 *************************************************************************/
 	public function __construct( ) {
+		$this->themes = $this->getThemes( );
 		$this->settings = $this->getSettings( );
 		$this->patternPath = $this->getPatternPath( );
 		$this->menus = UFIle::folderTree( $this->patternPath, '*.html', static::MAX_DEPTH, UFile::FILE_FLAG );
@@ -85,16 +99,58 @@ class Almagesq {
 	/*************************************************************************
 	  PROTECTED METHODS				   
 	 *************************************************************************/
-	protected function getSettings( ) {
-		$confDir = __DIR__ . '/../settings';
-		if ( ! $settingsFile = realpath( $confDir . '/user.ini' ) ) {
-			if ( ! $settingsFile = realpath( $confDir . '/default.ini' ) ) {
+	protected function getThemes( ) {
+		$themes = \UFile::fileList( __DIR__ . static::USER_SETTINGS_PATH, '*.ini' );
+		if ( empty( $themes ) ) {
+			if ( ! $themes = realpath( __DIR__ . static::SETTINGS_PATH . '/default.ini' ) ) {
 				echo 'Settings file not found :\'(';
 				die;
 			}
+		} else {
+			foreach( $themes as $key => $theme ) {
+				unset( $themes[ $key ] );
+				$themes[ static::FileHumanName( $theme ) ] = $theme;
+			}
 		}
-		$settings = parse_ini_file( $settingsFile );
+		return $themes;
+	}
+
+	protected function isThemeExist( $theme ) {
+		return in_array( $theme, array_keys( $this->themes ) );
+	}
+
+	protected function getSettings( ) {
+		if ( is_array( $this->themes ) ) {
+			if ( isset( $_GET[ 'theme' ] ) && $this->isThemeExist( $_GET[ 'theme' ] ) ) {
+				$this->setCurrentTheme( $_GET[ 'theme' ] );
+			}
+			if ( $this->issetCurrentTheme( ) ) {
+				$this->setDefaultCurrentTheme( );
+			}
+			$settings = parse_ini_file( $this->themes[ $this->getCurrentTheme( ) ] );
+		} else {
+			$settings = parse_ini_file( $this->themes );
+		}
 		return $settings;
+	}
+
+	protected function setCurrentTheme( $theme ) {
+		if ( ! is_array( $_SESSION[ 'Almagesq' ] ) ) {
+			$_SESSION[ 'Almagesq' ] = array( );
+		}
+		$_SESSION[ 'Almagesq' ][ 'theme' ] = $theme;
+	}
+
+	protected function issetCurrentTheme( ) {
+		return ( ! isset( $_SESSION[ 'Almagesq' ][ 'theme' ] ) || ! $this->isThemeExist( $_SESSION[ 'Almagesq' ][ 'theme' ] ) );
+	}
+
+	protected function setDefaultCurrentTheme( ) {
+		$this->setCurrentTheme( key( $this->themes ) );
+	}
+
+	protected function getCurrentTheme( ) {
+		return $_SESSION[ 'Almagesq' ][ 'theme' ];
 	}
 
 	protected function getPatternPath( ) {

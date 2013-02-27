@@ -7,6 +7,7 @@
     <style>
     	body {
     		margin: 0;
+            overflow: hidden;
     	}
     </style>
     <?php foreach ( $almagesq->getStyles( ) as $style ) : ?>

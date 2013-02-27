@@ -19,6 +19,20 @@
           </a>
           <a href="index.php" class="brand <?= ( $almagesq->currentMenus[ 0 ] === NULL ? 'active' : '' )?>"><?= $almagesq->getTitle( ) ?></a>
           <div class="nav-collapse collapse">
+            <?php if ( is_array( $almagesq->themes ) && count( $almagesq->themes ) > 1 ): ?>
+              <div class="navbar-text pull-right">
+                <ul class="nav">
+                  <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Themes <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                      <?php foreach ( array_keys( $almagesq->themes ) as $theme ): ?> 
+                        <li><a href="?<?= $almagesq->getCurrentMenuHttpQuery( ) ?>&amp;theme=<?= $theme ?>"><?= $theme ?></a></li>
+                      <?php endforeach; ?> 
+                    </ul>
+                  </li>
+                </ul>
+              </div>
+            <?php endif; ?>
             <ul class="nav">
               <?php 
                 foreach ( $almagesq->menus as $menu => $submenus ): 
@@ -64,7 +78,7 @@
               $patternName = substr( $patternName, strlen( $prefix ) + 1 );
             }
           }
-          $patternHumanName = ucfirst( str_replace( '_', ' ', $patternName ) );
+          $patternHumanName = Almagesq::FileHumanName( $patternName )
       ?>
         <div class="pattern" id="<?= $patternName ?>">
           <div class="pattern__title">
@@ -72,7 +86,7 @@
             <?= $patternHumanName ?>
           </div>
           <div class="pattern__demo">
-            <iframe src="iframe.php?menu[]=<?= $almagesq->currentMenus[ 0 ] ?>&amp;menu[]=<?= $almagesq->currentMenus[ 1 ] ?>&amp;pattern=<?= $pattern ?>">
+            <iframe src="iframe.php?<?= $almagesq->getCurrentMenuHttpQuery( ) ?>&amp;pattern=<?= $pattern ?>">
             </iframe>
           </div>
           <div class="pattern_code"></div>
