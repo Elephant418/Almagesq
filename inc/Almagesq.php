@@ -7,7 +7,6 @@ class Almagesq {
 	  CONSTANTS
 	 *************************************************************************/
 	const MAX_DEPTH = 2;
-	const PATTERN_FOLDER = 'pattern';
 
 
 	/*************************************************************************
@@ -18,7 +17,7 @@ class Almagesq {
 	public $currentMenus = array( );
 	public $patterns = array( );
 	public $currentPattern;
-	public $resources;
+	public $settings;
 
 
 	/*************************************************************************
@@ -43,15 +42,15 @@ class Almagesq {
 	}
 	public function getTitle( ) {
 		$title = 'Style Guide';
-		if ( isset( $this->resources[ 'title' ] ) ) {
-			$title = $this->resources[ 'title' ];
+		if ( isset( $this->settings[ 'title' ] ) ) {
+			$title = $this->settings[ 'title' ];
 		}
 		return $title;
 	}
 	public function getStyles( ) {
 		$styles = array( );
-		if ( isset( $this->resources[ 'styles' ] ) ) {
-			$styles = $this->resources[ 'styles' ];
+		if ( isset( $this->settings[ 'styles' ] ) ) {
+			$styles = $this->settings[ 'styles' ];
 			if ( ! is_array( $styles ) ) {
 				$styles = array( $styles );
 			}
@@ -60,8 +59,8 @@ class Almagesq {
 	}
 	public function getScripts( ) {
 		$scripts = array( );
-		if ( isset( $this->resources[ 'scripts' ] ) ) {
-			$scripts = $this->resources[ 'scripts' ];
+		if ( isset( $this->settings[ 'scripts' ] ) ) {
+			$scripts = $this->settings[ 'scripts' ];
 			if ( ! is_array( $scripts ) ) {
 				$scripts = array( $scripts );
 			}
@@ -74,18 +73,31 @@ class Almagesq {
 	  CONSTRUCTOR METHODS				   
 	 *************************************************************************/
 	public function __construct( ) {
-		$this->patternPath = __DIR__ . '/../' . static::PATTERN_FOLDER;
+		$this->settings = parse_ini_file( __DIR__ . '/../conf/settings.ini' );
+		$this->patternPath = $this->getPatternPath( );
 		$this->menus = UFIle::folderTree( $this->patternPath, '*.html', static::MAX_DEPTH, UFile::FILE_FLAG );
 		$this->currentMenus = $this->getCurrentMenus( );
 		$this->patterns = $this->getPatterns( );
 		$this->currentPattern = $this->getCurrentPattern( );
-		$this->resources = parse_ini_file( __DIR__ . '/../conf/resource.ini' );
 	}
 
 
 	/*************************************************************************
 	  PROTECTED METHODS				   
 	 *************************************************************************/
+	protected function getPatternPath( ) {
+		$basePath = __DIR__ . '/..';
+		$patternPath = $basePath . '/pattern';
+		if ( isset( $this->settings[ 'pattern_path' ] ) ) {
+			$patternPath = $basePath . '/' . $this->settings[ 'pattern_path' ];
+		}
+		if ( ! $patternPath = realpath( $patternPath ) ) {
+			echo 'Pattern folder not found :\'(';
+				die;
+		}
+		return $patternPath;
+	}
+
 	protected function getCurrentMenus( ) {
 		$currentMenus = array( );
 		if ( isset( $_GET[ 'menu' ] ) && is_array( $_GET[ 'menu' ] ) ) {
