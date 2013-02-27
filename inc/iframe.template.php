@@ -4,6 +4,11 @@
     <meta charset="utf-8">
     <title>Almagesq - Your pattern style guide</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+    	body {
+    		margin: 0;
+    	}
+    </style>
     <?php foreach ( $almagesq->getStyles( ) as $style ) : ?>
     	<link rel="stylesheet" href="<?= $style ?>">
     <?php endforeach; ?>

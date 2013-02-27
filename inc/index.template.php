@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title><?= $almagesq->getTitle( ) ?> - style guide</title>
+    <title><?= $almagesq->getTitle( ) ?> Style Guide</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/bootstrap-responsive.min.css">
@@ -57,9 +57,14 @@
     <div class="container">
       <?php
         foreach ( $almagesq->patterns as $pattern ):
+          $patternName = substr( $pattern, 0, strpos( $pattern, '.' ) );
+          $patternHumanName = ucfirst( str_replace( '_', ' ', $patternName ) );
       ?>
-        <div class="pattern">
-          <div class="pattern__title"><?= ucfirst( substr( $pattern, 0, strpos( $pattern, '.' ) ) ) ?></div>
+        <div class="pattern" id="<?= $patternName ?>">
+          <div class="pattern__title">
+            <a href="#<?= $patternName ?>" class="pattern__link">#</a>
+            <?= $patternHumanName ?>
+          </div>
           <div class="pattern__demo">
             <iframe src="iframe.php?menu[]=<?= $almagesq->currentMenus[ 0 ] ?>&amp;menu[]=<?= $almagesq->currentMenus[ 1 ] ?>&amp;pattern=<?= $pattern ?>">
             </iframe>
@@ -70,6 +75,15 @@
         endforeach;
       ?>
     </div>
+    <script>
+      var iframes = document.getElementsByTagName( 'iframe' );
+      for ( var i in iframes ) {
+        iframes[ i ].onload = function( ) {
+          console.dir( this.contentWindow );
+          this.style.height = this.contentWindow.document.body.clientHeight + 'px';
+        }
+      }
+    </script>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
     <script src="js/bootstrap.js"></script>
   </body>
