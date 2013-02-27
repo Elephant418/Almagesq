@@ -6,10 +6,15 @@ class UFile {
 	const FILE_FLAG = 0;
 
 	public static function fileTree( $path, $pattern = '*', $depth = 1, $flags = 0, $level = 0 ) {
-		$tree  = static::folderTree( $pattern, $path, $depth, $flags, $level );
-		$files = static::fileList( $pattern, $path, $flags );
+		$tree = static::folderTree( $pattern, $path, $depth, $flags, $level );
+		if ( empty( $tree ) ) {
+			$files = static::fileList( $pattern, $path, $flags );
+			foreach ( $files as $file ) {
+				$tree[ ] = basename( $file );
+			}
+		}
 
-		return array_merge( $tree, $files );
+		return $tree;
 	}
 
 	public static function folderTree( $path, $pattern = '*', $depth = 1, $flags = GLOB_ONLYDIR, $level = 0 ) {
