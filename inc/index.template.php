@@ -17,7 +17,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </a>
-          <a href="index.php" class="brand <?= ( $almagesq->currentMenus[ 0 ] === NULL ? 'active' : '' )?>"><?= $almagesq->getTitle( ) ?></a>
+          <a href="index.php<?= $almagesq->getHttpQuery( array( ) ) ?>" class="brand <?= ( $almagesq->currentMenus[ 0 ] === NULL ? 'active' : '' )?>"><?= $almagesq->getTitle( ) ?></a>
           <div class="nav-collapse collapse">
             <?php if ( is_array( $almagesq->themes ) && count( $almagesq->themes ) > 1 ): ?>
               <div class="navbar-text pull-right">
@@ -26,7 +26,7 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Themes <b class="caret"></b></a>
                     <ul class="dropdown-menu">
                       <?php foreach ( array_keys( $almagesq->themes ) as $theme ): ?> 
-                        <li><a href="?<?= $almagesq->getCurrentMenuHttpQuery( ) ?>&amp;theme=<?= $theme ?>"><?= $theme ?></a></li>
+                        <li><a href="<?= $almagesq->getHttpQuery( NULL, $theme ) ?>"><?= $theme ?></a></li>
                       <?php endforeach; ?> 
                     </ul>
                   </li>
@@ -40,11 +40,11 @@
                   if ( empty( $submenus ) || Almagesq::hasPatterns( $submenus ) ): 
               ?>
                   <li class="<?= ( $isMenuActive ? 'active' : '' )?>">
-                    <a href="?menu[]=<?= $menu ?>"><?= ucfirst( $menu ) ?></a>
+                    <a href="<?= $almagesq->getHttpQuery( array( $menu ) ) ?>"><?= ucfirst( $menu ) ?></a>
                   </li>
                 <?php else: ?>
                   <li class="dropdown <?= ( $isMenuActive ? 'active' : '' )?>">
-                    <a href="?menu[]=<?= $menu ?>" class="dropdown-toggle" data-toggle="dropdown">
+                    <a href="<?= $almagesq->getHttpQuery( array( $menu ) ) ?>" class="dropdown-toggle" data-toggle="dropdown">
                       <?= ucfirst( $menu ) ?> <b class="caret"></b>
                     </a>
                     <ul class="dropdown-menu">
@@ -53,7 +53,7 @@
                         $isSubmenuActive = ( $isMenuActive && $almagesq->currentMenus[ 1 ] == $submenu );
                       ?> 
                         <li class="<?= ( $isSubmenuActive ? 'active' : '' )?>">
-                          <a href="?menu[]=<?= $menu ?>&amp;menu[]=<?= $submenu ?>"><?= ucfirst( $submenu ) ?></a>
+                          <a href="<?= $almagesq->getHttpQuery( array( $menu, $submenu ) ) ?>"><?= ucfirst( $submenu ) ?></a>
                         </li>
                       <?php endforeach; ?> 
                     </ul>
@@ -86,7 +86,7 @@
             <?= $patternHumanName ?>
           </div>
           <div class="pattern__demo">
-            <iframe src="iframe.php?<?= $almagesq->getCurrentMenuHttpQuery( ) ?>&amp;pattern=<?= $pattern ?>">
+            <iframe src="iframe.php<?= $almagesq->getHttpQuery( ) ?>&amp;pattern=<?= $pattern ?>">
             </iframe>
           </div>
           <div class="pattern_code"></div>

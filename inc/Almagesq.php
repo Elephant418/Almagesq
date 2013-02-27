@@ -20,6 +20,7 @@ class Almagesq {
 	public $patterns = array( );
 	public $currentPattern;
 	public $themes = [ ];
+	public $currentTheme;
 	public $settings;
 
 
@@ -77,8 +78,37 @@ class Almagesq {
 		}
 		return $scripts;
 	}
-	public function getCurrentMenuHttpQuery( ) {
-		return 'menu[]=' . $this->currentMenus[ 0 ] . '&amp;menu[]=' . $this->currentMenus[ 1 ];
+	public function getMenuHttpQuery( $menus = NULL ) {
+		$compiledMenus = $this->currentMenus;
+		if ( is_array( $menus ) ) {
+			if ( isset( $menus[ 0 ] ) ) {
+				$compiledMenus[ 0 ] = $menus[ 0 ];
+				unset( $compiledMenus[ 1 ] );
+			}
+			if ( isset( $menus[ 1 ] ) ) {
+				$compiledMenus[ 1 ] = $menus[ 1 ];
+			}
+			if ( ! isset( $menus[ 0 ] ) && ! isset( $menus[ 1 ] ) ) {
+				$compiledMenus = array( );
+			}
+		}
+		$query = '';
+		if ( isset( $compiledMenus[ 0 ] ) ) {
+			$query .= '&amp;menu[]=' . $compiledMenus[ 0 ];
+			if ( isset( $compiledMenus[ 1 ] ) ) {
+				$query .= '&amp;menu[]=' . $compiledMenus[ 1 ];
+			}
+		}
+		return $query;
+	}
+	public function getThemeHttpQuery( $theme = NULL ) {
+		if ( is_null( $theme ) ) {
+			$theme = $this->currentTheme;
+		}
+		return 'theme=' . $theme;
+	}
+	public function getHttpQuery( $menus = NULL, $theme = NULL ) {
+		return '?' . $this->getThemeHttpQuery( $theme ) . $this->getMenuHttpQuery( $menus );
 	}
 
 
@@ -124,10 +154,10 @@ class Almagesq {
 			if ( isset( $_GET[ 'theme' ] ) && $this->isThemeExist( $_GET[ 'theme' ] ) ) {
 				$this->setCurrentTheme( $_GET[ 'theme' ] );
 			}
-			if ( $this->issetCurrentTheme( ) ) {
+			if ( ! $this->issetCurrentTheme( ) ) {
 				$this->setDefaultCurrentTheme( );
 			}
-			$settings = parse_ini_file( $this->themes[ $this->getCurrentTheme( ) ] );
+			$settings = parse_ini_file( $this->themes[ $this->currentTheme ] );
 		} else {
 			$settings = parse_ini_file( $this->themes );
 		}
@@ -135,22 +165,15 @@ class Almagesq {
 	}
 
 	protected function setCurrentTheme( $theme ) {
-		if ( ! is_array( $_SESSION[ 'Almagesq' ] ) ) {
-			$_SESSION[ 'Almagesq' ] = array( );
-		}
-		$_SESSION[ 'Almagesq' ][ 'theme' ] = $theme;
+		$this->currentTheme = $theme;
 	}
 
 	protected function issetCurrentTheme( ) {
-		return ( ! isset( $_SESSION[ 'Almagesq' ][ 'theme' ] ) || ! $this->isThemeExist( $_SESSION[ 'Almagesq' ][ 'theme' ] ) );
+		return ( isset( $this->currentTheme ) );
 	}
 
 	protected function setDefaultCurrentTheme( ) {
 		$this->setCurrentTheme( key( $this->themes ) );
-	}
-
-	protected function getCurrentTheme( ) {
-		return $_SESSION[ 'Almagesq' ][ 'theme' ];
 	}
 
 	protected function getPatternPath( ) {
