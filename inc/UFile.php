@@ -25,7 +25,8 @@ class UFile {
 			$level++;
 			foreach ( $folders as $folder ) {
 				$tree[ basename( $folder ) ] = static::fileTree( $pattern, $folder, $depth, $flags, $level );
-			}	
+			}
+			ksort( $tree );
 		}
 
 		return $tree;

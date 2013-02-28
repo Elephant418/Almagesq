@@ -31,8 +31,19 @@ class Almagesq {
 		return ( is_array( $menu ) && ! empty( $menu ) && is_numeric( current( array_keys( $menu ) ) ) );
 	}
 	public static function FileHumanName( $file ) {
-		$fileName = ucfirst( str_replace( '_', ' ', basename( $file ) ) );
-		if ( $pos = strpos( $fileName, '.' ) ) {
+		$fileName = static::FileName( $file );
+		if ( strpos( $fileName, '-' ) !== FALSE ) {
+			$prefix = substr( $fileName, 0, strpos( $fileName, '-' ) );
+			if ( is_numeric( $prefix ) ) {
+			  $fileName = substr( $fileName, strlen( $prefix ) + 1 );
+			}
+		}
+		$fileName = ucfirst( str_replace( '_', ' ', $fileName ) );
+  		return $fileName;
+	}
+	public static function FileName( $file ) {
+		$fileName = basename( $file );
+		if ( $pos = strpos( $file, '.' ) ) {
 			$fileName = substr( $fileName, 0, $pos );
 		}
 		return $fileName;
@@ -148,7 +159,7 @@ class Almagesq {
 		} else {
 			foreach( $themes as $key => $theme ) {
 				unset( $themes[ $key ] );
-				$themes[ static::FileHumanName( $theme ) ] = $theme;
+				$themes[ static::FileName( $theme ) ] = $theme;
 			}
 		}
 		return $themes;

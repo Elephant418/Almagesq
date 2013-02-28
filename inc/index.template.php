@@ -44,7 +44,7 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Themes <b class="caret"></b></a>
                     <ul class="dropdown-menu">
                       <?php foreach ( array_keys( $almagesq->themes ) as $theme ): ?> 
-                        <li><a href="<?= $almagesq->getHttpQuery( NULL, $theme ) ?>"><?= $theme ?></a></li>
+                        <li><a href="<?= $almagesq->getHttpQuery( NULL, $theme ) ?>"><?= Almagesq::FileHumanName( $theme ) ?></a></li>
                       <?php endforeach; ?> 
                     </ul>
                   </li>
@@ -58,12 +58,12 @@
                   if ( empty( $submenus ) || Almagesq::hasPatterns( $submenus ) ): 
               ?>
                   <li class="<?= ( $isMenuActive ? 'active' : '' )?>">
-                    <a href="<?= $almagesq->getHttpQuery( array( $menu ) ) ?>"><?= ucfirst( $menu ) ?></a>
+                    <a href="<?= $almagesq->getHttpQuery( array( $menu ) ) ?>"><?= Almagesq::FileHumanName( $menu ) ?></a>
                   </li>
                 <?php else: ?>
                   <li class="dropdown <?= ( $isMenuActive ? 'active' : '' )?>">
                     <a href="<?= $almagesq->getHttpQuery( array( $menu ) ) ?>" class="dropdown-toggle" data-toggle="dropdown">
-                      <?= ucfirst( $menu ) ?> <b class="caret"></b>
+                      <?= Almagesq::FileHumanName( $menu ) ?> <b class="caret"></b>
                     </a>
                     <ul class="dropdown-menu">
                       <?php 
@@ -71,7 +71,7 @@
                         $isSubmenuActive = ( $isMenuActive && $almagesq->currentMenus[ 1 ] == $submenu );
                       ?> 
                         <li class="<?= ( $isSubmenuActive ? 'active' : '' )?>">
-                          <a href="<?= $almagesq->getHttpQuery( array( $menu, $submenu ) ) ?>"><?= ucfirst( $submenu ) ?></a>
+                          <a href="<?= $almagesq->getHttpQuery( array( $menu, $submenu ) ) ?>"><?= Almagesq::FileHumanName( $submenu ) ?></a>
                         </li>
                       <?php endforeach; ?> 
                     </ul>
@@ -89,14 +89,8 @@
     <div class="container">
       <?php
         foreach ( $almagesq->patterns as $pattern ):
-          $patternName = substr( $pattern, 0, strpos( $pattern, '.' ) );
-          if ( strpos( $patternName, '-' ) !== FALSE ) {
-            $prefix = substr( $patternName, 0, strpos( $patternName, '-' ) );
-            if ( is_numeric( $prefix ) ) {
-              $patternName = substr( $patternName, strlen( $prefix ) + 1 );
-            }
-          }
-          $patternHumanName = Almagesq::FileHumanName( $patternName )
+          $patternName = Almagesq::FileName( $pattern );
+          $patternHumanName = Almagesq::FileHumanName( $patternName );
       ?>
         <div class="pattern" id="<?= $patternName ?>">
           <div class="pattern__title">
