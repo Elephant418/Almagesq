@@ -7,6 +7,24 @@
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/bootstrap-responsive.min.css">
     <link rel="stylesheet" href="css/app.css">
+    <style>
+      .navbar-inverse .navbar-inner,
+      .navbar .navbar-inverse .dropdown-menu li > a:hover,
+      .navbar-inverse .dropdown-menu li > a:hover,
+      .navbar-inverse .dropdown-menu .active > a,
+      .navbar-inverse .dropdown-menu .active > a:hover {
+        background: <?= $almagesq->getNavbarStyle( 'background' ) ?>;
+        color: <?= $almagesq->getNavbarStyle( 'color' ) ?>;
+      }
+      .navbar.navbar-inverse .brand,
+      .navbar.navbar-inverse .nav > li > a {
+        color: <?= $almagesq->getNavbarStyle( 'color' ) ?>;
+      }
+      .navbar.navbar-inverse .nav li.dropdown > .dropdown-toggle .caret {
+          border-bottom-color: <?= $almagesq->getNavbarStyle( 'color' ) ?>;
+          border-top-color: <?= $almagesq->getNavbarStyle( 'color' ) ?>;
+      }
+    </style>
   </head>
   <body>
     <div class="navbar navbar-inverse navbar-fixed-top">

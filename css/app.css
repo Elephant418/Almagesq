@@ -10,11 +10,14 @@
 	font-weight: bold;
 }
 .navbar.navbar-inverse .brand,
-.navbar.navbar-inverse .nav > li > a {
+.navbar.navbar-inverse .brand.active,
+.navbar.navbar-inverse .nav > li > a,
+.navbar.navbar-inverse .nav > .active > a {
     color: white;
     text-shadow: none;
 }
-.navbar.navbar-inverse .nav li.dropdown > .dropdown-toggle .caret {
+.navbar.navbar-inverse .nav li.dropdown > .dropdown-toggle .caret,
+.navbar.navbar-inverse .nav .dropdown.open > .dropdown-toggle .caret {
     border-bottom-color: white;
     border-top-color: white;
 }
@@ -22,7 +25,7 @@
 .navbar-inverse .dropdown-menu li > a:hover,
 .navbar-inverse .dropdown-menu .active > a,
 .navbar-inverse .dropdown-menu .active > a:hover {
-    background-color: #34A9DE;
+    background-color: #1A546F;
     background-image: none;
     color: white;
 }

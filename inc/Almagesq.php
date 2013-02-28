@@ -8,7 +8,7 @@ class Almagesq {
 	 *************************************************************************/
 	const MAX_DEPTH = 2;
 	const SETTINGS_PATH = '/../settings';
-	const USER_SETTINGS_PATH = '/../settings/user';
+	const USER_SETTINGS_PATH = '/../settings/themes';
 
 
 	/*************************************************************************
@@ -56,15 +56,26 @@ class Almagesq {
 	}
 	public function getTitle( ) {
 		$title = 'Style Guide';
-		if ( isset( $this->settings[ 'title' ] ) ) {
-			$title = $this->settings[ 'title' ];
+		if ( isset( $this->settings[ 'nav-bar' ][ 'title' ] ) ) {
+			$title = $this->settings[ 'nav-bar' ][ 'title' ];
 		}
 		return $title;
 	}
+	public function getNavbarStyle( $property ) {
+		$style = '';
+		$styles = array( );
+		if ( isset( $this->settings[ 'nav-bar' ][ 'style' ] ) ) {
+			$styles = $this->settings[ 'nav-bar' ][ 'style' ];
+		}
+		if ( is_array( $styles ) && isset( $styles[ $property ] ) ) {
+			$style = $styles[ $property ];
+		}
+		return $style;
+	}
 	public function getStyles( ) {
 		$styles = array( );
-		if ( isset( $this->settings[ 'styles' ] ) ) {
-			$styles = $this->settings[ 'styles' ];
+		if ( isset( $this->settings[ 'pattern' ][ 'styles' ] ) ) {
+			$styles = $this->settings[ 'pattern' ][ 'styles' ];
 			if ( ! is_array( $styles ) ) {
 				$styles = array( $styles );
 			}
@@ -73,8 +84,8 @@ class Almagesq {
 	}
 	public function getScripts( ) {
 		$scripts = array( );
-		if ( isset( $this->settings[ 'scripts' ] ) ) {
-			$scripts = $this->settings[ 'scripts' ];
+		if ( isset( $this->settings[ 'pattern' ][ 'scripts' ] ) ) {
+			$scripts = $this->settings[ 'pattern' ][ 'scripts' ];
 			if ( ! is_array( $scripts ) ) {
 				$scripts = array( $scripts );
 			}
@@ -150,7 +161,7 @@ class Almagesq {
 			if ( ! $this->issetCurrentTheme( ) ) {
 				$this->setDefaultCurrentTheme( );
 			}
-			$settings = parse_ini_file( $this->themes[ $this->currentTheme ] );
+			$settings = parse_ini_file( $this->themes[ $this->currentTheme ], TRUE );
 		} else {
 			$settings = parse_ini_file( $this->themes );
 		}
@@ -159,8 +170,8 @@ class Almagesq {
 	protected function initPatternPath( ) {
 		$basePath = __DIR__ . '/..';
 		$patternPath = $basePath . '/pattern';
-		if ( isset( $this->settings[ 'pattern_path' ] ) ) {
-			$patternPath = $basePath . '/' . $this->settings[ 'pattern_path' ];
+		if ( isset( $this->settings[ 'pattern' ][ 'path' ] ) ) {
+			$patternPath = $basePath . '/' . $this->settings[ 'pattern' ][ 'path' ];
 		}
 		if ( ! $patternPath = realpath( $patternPath ) ) {
 			echo 'Pattern folder not found :\'(';
