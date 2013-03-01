@@ -20,5 +20,13 @@
     <?php foreach ( $almagesq->getScripts( ) as $script ) : ?>
     	<script src="<?= $script ?>"></script>
     <?php endforeach; ?>
+    <script>
+        var forms = document.getElementsByTagName( 'form' );
+        for ( var i in forms ) {
+            forms[ i ].onsubmit = function() {
+                return false;
+            }
+        }
+    </script>
   </body>
 </html>

@@ -107,19 +107,27 @@
         foreach ( $almagesq->patterns as $pattern ):
           $patternName = Almagesq::FileName( $pattern );
           $patternHumanName = Almagesq::FileHumanName( $patternName );
+          $iframeUrl = 'iframe.php' . $almagesq->getHttpQuery( ) . '&amp;pattern=' . $pattern;
       ?>
         <div class="pattern" id="<?= $patternName ?>">
           <div class="pattern__title">
             <a href="#<?= $patternName ?>" class="pattern__link pattern__link--anchor">#</a>
             <?= $patternHumanName ?>
-            <a href="#<?= $patternName ?>_code" class="pattern__link pattern__link--code pull-right">Show the source code</a>
+            <div class="pull-right">
+              <a href="#<?= $patternName ?>_copy" class="pattern__link pattern__link--copy">select code</a> |
+              <a href="#<?= $patternName ?>_code" class="pattern__link pattern__link--code">view code</a> |
+              <a href="<?= $iframeUrl ?>" class="pattern__link" target="_blank">open iframe</a>
+            </div>
           </div>
           <div class="pattern__demo">
-            <iframe src="iframe.php<?= $almagesq->getHttpQuery( ) ?>&amp;pattern=<?= $pattern ?>">
+            <iframe src="<?= $iframeUrl ?>">
             </iframe>
           </div>
           <div class="pattern__code" id="<?= $patternName ?>_code">
             <pre><code><?= htmlentities( $almagesq->getPatternHtml( $pattern ) ) ?></code></pre>
+          </div>
+          <div class="pattern__copy" id="<?= $patternName ?>_copy">
+            <textarea><?= $almagesq->getPatternHtml( $pattern ) ?></textarea>
           </div>
         </div>
       <?php  
@@ -127,15 +135,24 @@
       ?>
     </div>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+    <script src="js/bootstrap.js"></script>
     <script>
       $(function( ){
-        $( '.pattern__code' ).hide( );
+        $( '.pattern__code, .pattern__copy' ).hide( );
         $( '.pattern__link--code' ).click( function( ) {
           if ( $( this.href.substring( this.href.indexOf('#') ) ).toggle( ).is(':hidden') ) {
-            $( this ).html( 'Show the source code' );
+            this.innerHTML = 'view code';
           } else {
-            $( this ).html( 'Hide the source code' );
+            this.innerHTML = 'hide code';
           }
+          return false;
+        });
+        $(".pattern__link--copy").click( function() {
+          $( this.href.substring( this.href.indexOf('#') ) )
+            .show( )
+            .children()
+            .get(0)
+            .select();
           return false;
         });
         <?php if ( isset( $breakpoints[ 'default'] ) ) : ?>
@@ -165,6 +182,5 @@
         iframe.style.height = iframe.contentWindow.document.body.clientHeight + 'px';
       }
     </script>
-    <script src="js/bootstrap.js"></script>
   </body>
 </html>
