@@ -41,15 +41,19 @@
             <div class="navbar-text pull-right">
               <ul class="nav">
                 <li class="resize">
+                  <a href="javascript:resizeIframe('-');">-</a> |
                   <?php
                     $breakpoints = $almagesq->getBreakpoints( );
                     if ( isset( $breakpoints[ 'available'] ) && is_array( $breakpoints[ 'available'] ) ):
                       foreach( $breakpoints[ 'available'] as $breakpoint ):
-                    ?>
+                  ?>
                       <a href="javascript:resizeIframe(<?= $breakpoint ?>);"><?= $breakpoint ?></a> |
-                    <?php endforeach; ?>
-                    <a href="javascript:resizeIframe('100%');">Max</a>
-                  <?php endif; ?>
+                  <?php 
+                      endforeach;
+                    endif;
+                  ?>
+                  <a href="javascript:resizeIframe('100%');">Max</a> |
+                  <a href="javascript:resizeIframe('+');">+</a>
                 </li>
                 <?php if ( is_array( $almagesq->themes ) && count( $almagesq->themes ) > 1 ): ?>
                   <li class="dropdown">
@@ -134,19 +138,27 @@
           }
           return false;
         });
-        $( 'iframe' ).each( function( ) {
-          this.onload = function( ) {
-            this.style.height = this.contentWindow.document.body.clientHeight + 'px';
-          }
-        });
         <?php if ( isset( $breakpoints[ 'default'] ) ) : ?>
-          resizeIframe( <?= var_export( $breakpoints[ 'default'] ) ?> )
+          resizeIframe( <?= var_export( $breakpoints[ 'default'] ) ?> );
+        <?php else: ?>
+          resizeIframe( '100%' );
         <?php endif; ?>
       });
       function resizeIframe( width ) {
+        if ( width == '-' ) {
+          width = $( 'iframe' ).width() - 5;
+        } else if ( width == '+' ) {
+          width = $( 'iframe' ).width() + 5;
+        }
         $( 'iframe' ).width( width );
         $( 'iframe' ).each( function( ) {
-          this.style.height = this.contentWindow.document.body.clientHeight + 'px';
+          var iframe = this;
+          var interval = setInterval( function( ) {
+            if ( iframe.style.width == width ) {
+              clearInterval( interval );
+              iframe.style.height = iframe.contentWindow.document.body.clientHeight + 'px';
+            }
+          }, 100);
         });
       }
     </script>
