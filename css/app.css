@@ -16,8 +16,16 @@
     color: white;
     text-shadow: none;
 }
+.navbar.navbar-inverse .nav > .resize {
+    padding: 10px 15px;
+}
+.navbar.navbar-inverse .nav > .resize > a {
+    display: inline;
+    padding: 0;
+}
 .navbar.navbar-inverse .nav li.dropdown > .dropdown-toggle .caret,
-.navbar.navbar-inverse .nav .dropdown.open > .dropdown-toggle .caret {
+.navbar.navbar-inverse .nav .dropdown.open > .dropdown-toggle .caret,
+.navbar.navbar-inverse .nav .dropdown.active > .dropdown-toggle .caret  {
     border-bottom-color: white;
     border-top-color: white;
 }

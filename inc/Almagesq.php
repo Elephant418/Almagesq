@@ -53,8 +53,12 @@ class Almagesq {
 	/*************************************************************************
 	  PUBLIC METHODS				   
 	 *************************************************************************/
+	public function getMenuPath( $menus ) {
+		$path = $this->patternPath . '/' . implode( $menus, '/' );
+		return realpath( $path );
+	}
 	public function getPatternPath( $pattern ) {
-		$path = $this->patternPath . '/' . implode( $this->currentMenus, '/' ) . '/' . $pattern;
+		$path = $this->getMenuPath( $this->currentMenus ) . '/' . $pattern;
 		return realpath( $path );
 	}
 	public function getPatternHtml( $pattern ) {
@@ -102,6 +106,16 @@ class Almagesq {
 			}
 		}
 		return $scripts;
+	}
+	public function getBreakpoints( ) {
+		for ( $i=count( $this->currentMenus ); $i>=0; $i-- ) {
+			$menus = array_slice( $this->currentMenus, 0, $i);
+			$path = $this->getMenuPath( $menus ) . '/breakpoints.ini';
+			if ( is_file( $path ) ) {
+				return parse_ini_file( $path );
+			}
+		}
+		return array( );
 	}
 	public function getMenuHttpQuery( $menus = NULL ) {
 		$compiledMenus = $this->currentMenus;

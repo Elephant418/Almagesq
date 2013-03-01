@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title><?= $almagesq->getTitle( ) ?> Style Guide</title>
+    <title><?= $almagesq->getTitle( ) ?> Living Style Guide</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/bootstrap-responsive.min.css">
@@ -17,6 +17,7 @@
         color: <?= $almagesq->getNavbarStyle( 'color' ) ?>;
       }
       .navbar.navbar-inverse .brand,
+      .navbar.navbar-inverse .nav > .resize,
       .navbar.navbar-inverse .nav > li > a {
         color: <?= $almagesq->getNavbarStyle( 'color' ) ?>;
       }
@@ -37,9 +38,20 @@
           </a>
           <a href="index.php<?= $almagesq->getHttpQuery( array( ) ) ?>" class="brand <?= ( $almagesq->currentMenus[ 0 ] === NULL ? 'active' : '' )?>"><?= $almagesq->getTitle( ) ?></a>
           <div class="nav-collapse collapse">
-            <?php if ( is_array( $almagesq->themes ) && count( $almagesq->themes ) > 1 ): ?>
-              <div class="navbar-text pull-right">
-                <ul class="nav">
+            <div class="navbar-text pull-right">
+              <ul class="nav">
+                <li class="resize">
+                  <?php
+                    $breakpoints = $almagesq->getBreakpoints( );
+                    if ( isset( $breakpoints[ 'available'] ) && is_array( $breakpoints[ 'available'] ) ):
+                      foreach( $breakpoints[ 'available'] as $breakpoint ):
+                    ?>
+                      <a href="javascript:resizeIframe(<?= $breakpoint ?>);"><?= $breakpoint ?></a> |
+                    <?php endforeach; ?>
+                    <a href="javascript:resizeIframe('100%');">Max</a>
+                  <?php endif; ?>
+                </li>
+                <?php if ( is_array( $almagesq->themes ) && count( $almagesq->themes ) > 1 ): ?>
                   <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Themes <b class="caret"></b></a>
                     <ul class="dropdown-menu">
@@ -48,9 +60,9 @@
                       <?php endforeach; ?> 
                     </ul>
                   </li>
-                </ul>
-              </div>
-            <?php endif; ?>
+                <?php endif; ?>
+              </ul>
+            </div>
             <ul class="nav">
               <?php 
                 foreach ( $almagesq->menus as $menu => $submenus ): 
@@ -127,7 +139,16 @@
             this.style.height = this.contentWindow.document.body.clientHeight + 'px';
           }
         });
+        <?php if ( isset( $breakpoints[ 'default'] ) ) : ?>
+          resizeIframe( <?= var_export( $breakpoints[ 'default'] ) ?> )
+        <?php endif; ?>
       });
+      function resizeIframe( width ) {
+        $( 'iframe' ).width( width );
+        $( 'iframe' ).each( function( ) {
+          this.style.height = this.contentWindow.document.body.clientHeight + 'px';
+        });
+      }
     </script>
     <script src="js/bootstrap.js"></script>
   </body>
