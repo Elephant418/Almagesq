@@ -140,26 +140,29 @@
         });
         <?php if ( isset( $breakpoints[ 'default'] ) ) : ?>
           resizeIframe( <?= var_export( $breakpoints[ 'default'] ) ?> );
-        <?php else: ?>
-          resizeIframe( '100%' );
         <?php endif; ?>
+        $( 'iframe' ).each( function( ) {
+          this.onload = function( ) {
+            adaptHeight( this );
+          };
+        });
       });
       function resizeIframe( width ) {
         if ( width == '-' ) {
           width = $( 'iframe' ).width() - 5;
         } else if ( width == '+' ) {
           width = $( 'iframe' ).width() + 5;
+        } 
+        if ( ! isNaN( width ) ) {
+          width += 'px';
         }
         $( 'iframe' ).width( width );
         $( 'iframe' ).each( function( ) {
-          var iframe = this;
-          var interval = setInterval( function( ) {
-            if ( iframe.style.width == width ) {
-              clearInterval( interval );
-              iframe.style.height = iframe.contentWindow.document.body.clientHeight + 'px';
-            }
-          }, 100);
+          adaptHeight( this );
         });
+      }
+      function adaptHeight( iframe ) {
+        iframe.style.height = iframe.contentWindow.document.body.clientHeight + 'px';
       }
     </script>
     <script src="js/bootstrap.js"></script>
