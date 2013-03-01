@@ -138,7 +138,7 @@
     <script src="js/bootstrap.js"></script>
     <script>
       $(function( ){
-        $( '.pattern__code, .pattern__copy' ).hide( );
+        $( '.pattern__code' ).hide( );
         $( '.pattern__link--code' ).click( function( ) {
           if ( $( this.href.substring( this.href.indexOf('#') ) ).toggle( ).is(':hidden') ) {
             this.innerHTML = 'view code';
@@ -149,7 +149,6 @@
         });
         $(".pattern__link--copy").click( function() {
           $( this.href.substring( this.href.indexOf('#') ) )
-            .show( )
             .children()
             .get(0)
             .select();
@@ -179,7 +178,7 @@
         });
       }
       function adaptHeight( iframe ) {
-        iframe.style.height = iframe.contentWindow.document.body.clientHeight + 'px';
+        iframe.style.height = ( iframe.contentWindow.document.body.clientHeight + 2 ) + 'px';
       }
     </script>
   </body>
