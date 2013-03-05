@@ -139,7 +139,7 @@
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
     <script>
       <?= file_get_contents( __DIR__ . '/../js/bootstrap.js' ); ?>
-      $(function( ){
+      $(window).load(function( ){
         $( '.pattern__code' ).hide( );
         $( '.pattern__link--code' ).click( function( ) {
           if ( $( this.href.substring( this.href.indexOf('#') ) ).toggle( ).is(':hidden') ) {
