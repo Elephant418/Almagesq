@@ -188,7 +188,7 @@ class Almagesq {
 			}
 			$settings = parse_ini_file( $this->themes[ $this->currentTheme ], TRUE );
 		} else {
-			$settings = parse_ini_file( $this->themes );
+			$settings = parse_ini_file( $this->themes, TRUE );
 		}
 		return $settings;
 	}
