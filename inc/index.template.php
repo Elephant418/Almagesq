@@ -4,10 +4,12 @@
     <meta charset="utf-8">
     <title><?= $almagesq->getTitle( ) ?> Living Style Guide</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/bootstrap-responsive.min.css">
-    <link rel="stylesheet" href="css/app.css">
     <style>
+      <? 
+        echo file_get_contents( __DIR__ . '/../css/bootstrap.min.css' );
+        echo file_get_contents( __DIR__ . '/../css/bootstrap-responsive.min.css' );
+        echo file_get_contents( __DIR__ . '/../css/app.css' );
+      ?>
       .navbar-inverse .navbar-inner,
       .navbar .navbar-inverse .dropdown-menu li > a:hover,
       .navbar-inverse .dropdown-menu li > a:hover,
@@ -135,8 +137,8 @@
       ?>
     </div>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
-    <script src="js/bootstrap.js"></script>
     <script>
+      <?= file_get_contents( __DIR__ . '/../js/bootstrap.js' ); ?>
       $(function( ){
         $( '.pattern__code' ).hide( );
         $( '.pattern__link--code' ).click( function( ) {
