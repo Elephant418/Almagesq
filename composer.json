@@ -1,0 +1,15 @@
+{
+    "name": "pixel418/almagesq",
+    "type": "library",
+    "description": "Generate your living style guide",
+    "keywords": [ "css" ],
+    "homepage": "https://github.com/Pixel418/Almagesq",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Thomas ZILLIOX",
+            "homepage": "http://zilliox.me",
+            "role": "Developer"
+        }
+    ]
+}
