@@ -19,7 +19,7 @@ class Almagesq {
 	public $currentMenus = array( );
 	public $patterns = array( );
 	public $currentPattern;
-	public $themes = [ ];
+	public $themes = array( );
 	public $currentTheme;
 	public $settings;
 
