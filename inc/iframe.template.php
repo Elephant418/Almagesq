@@ -5,7 +5,13 @@
     <title>Almagesq - Your pattern style guide</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <?php foreach ( $almagesq->getStyles( ) as $style ) : ?>
-    	<link rel="stylesheet" href="<?= $style ?>">
+        <?php if ( ! empty( $style[ 'condition' ] ) ) : ?>
+            <!--[if <?= $style[ 'condition' ] ?>]>
+        <?php endif; ?>
+            <link rel="stylesheet" href="<?= $style[ 'url' ] ?>">
+        <?php if ( ! empty( $style[ 'condition' ] ) ) : ?>
+            <![endif]-->
+        <?php endif; ?>
     <?php endforeach; ?>
     <style>
         body {

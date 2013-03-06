@@ -94,6 +94,16 @@ class Almagesq {
 			if ( ! is_array( $styles ) ) {
 				$styles = array( $styles );
 			}
+			foreach ( $styles as $key => $url ) {
+				$pos = strpos( $url, '|' );
+				if ( $pos === FALSE ) {
+					$condition = '';
+				} else {
+					$condition = substr( $url, 0, $pos );
+					$url = substr( $url, $pos+1 );
+				}
+				$styles[ $key ] = array( 'condition' => $condition, 'url' => $url );
+			}
 		}
 		return $styles;
 	}
