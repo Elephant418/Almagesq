@@ -107,13 +107,17 @@ class Almagesq {
 		}
 		return $scripts;
 	}
-	public function getBreakpoints( ) {
-		for ( $i=count( $this->currentMenus ); $i>=0; $i-- ) {
-			$menus = array_slice( $this->currentMenus, 0, $i);
-			$path = $this->getMenuPath( $menus ) . '/breakpoints.ini';
-			if ( is_file( $path ) ) {
-				return parse_ini_file( $path );
-			}
+	public function getPatternBackground( ) {
+		$settings = $this->getPatternSettings( );
+		if ( isset( $settings[ 'background' ] ) ) {
+			return $settings[ 'background' ];
+		}
+		return 'transparent';
+	}
+	public function getPatternBreakpoints( ) {
+		$settings = $this->getPatternSettings( );
+		if ( isset( $settings[ 'breakpoints' ] ) ) {
+			return $settings[ 'breakpoints' ];
 		}
 		return array( );
 	}
@@ -259,6 +263,16 @@ class Almagesq {
 			$submenus =& $submenus[ $menu ]; 
 		}
 		return $submenus;
+	}
+	protected function getPatternSettings( ) {
+		for ( $i=count( $this->currentMenus ); $i>=0; $i-- ) {
+			$menus = array_slice( $this->currentMenus, 0, $i);
+			$path = $this->getMenuPath( $menus ) . '/pattern.ini';
+			if ( is_file( $path ) ) {
+				return parse_ini_file( $path, TRUE );
+			}
+		}
+		return array( );
 	}
 
 }

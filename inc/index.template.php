@@ -45,7 +45,7 @@
                 <li class="resize">
                   <a href="javascript:resizeIframe('-');">-</a> |
                   <?php
-                    $breakpoints = $almagesq->getBreakpoints( );
+                    $breakpoints = $almagesq->getPatternBreakpoints( );
                     if ( isset( $breakpoints[ 'available'] ) && is_array( $breakpoints[ 'available'] ) ):
                       foreach( $breakpoints[ 'available'] as $breakpoint ):
                   ?>
