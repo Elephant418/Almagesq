@@ -122,7 +122,7 @@
             </div>
           </div>
           <div class="pattern__demo">
-            <iframe src="<?= $iframeUrl ?>">
+            <iframe src="<?= $iframeUrl ?>" frameBorder="0" marginWidth="0" marginHeight="0" scrolling="no" hspace="0" vspace="0">
             </iframe>
           </div>
           <div class="pattern__code" id="<?= $patternName ?>_code">
