@@ -8,6 +8,7 @@
       <? 
         echo file_get_contents( __DIR__ . '/../css/bootstrap.min.css' );
         echo file_get_contents( __DIR__ . '/../css/bootstrap-responsive.min.css' );
+        echo file_get_contents( __DIR__ . '/../css/prismjs.css' );
         echo file_get_contents( __DIR__ . '/../css/app.css' );
       ?>
       .navbar-inverse .navbar-inner,
@@ -26,6 +27,10 @@
       .navbar.navbar-inverse .nav li.dropdown > .dropdown-toggle .caret {
           border-bottom-color: <?= $almagesq->getNavbarStyle( 'color' ) ?>;
           border-top-color: <?= $almagesq->getNavbarStyle( 'color' ) ?>;
+      }
+      pre {
+        border: 0;
+        border-radius: 0;
       }
     </style>
   </head>
@@ -126,7 +131,7 @@
             </iframe>
           </div>
           <div class="pattern__code" id="<?= $patternName ?>_code">
-            <pre><code><?= htmlentities( $almagesq->getPatternHtml( $pattern ) ) ?></code></pre>
+            <pre><code class="language-markup"><?= htmlentities( $almagesq->getPatternHtml( $pattern ) ) ?></code></pre>
           </div>
           <div class="pattern__copy" id="<?= $patternName ?>_copy">
             <textarea><?= $almagesq->getPatternHtml( $pattern ) ?></textarea>
@@ -138,6 +143,7 @@
     </div>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
     <script>
+      <?= file_get_contents( __DIR__ . '/../js/prismjs.js' ); ?>
       <?= file_get_contents( __DIR__ . '/../js/bootstrap.js' ); ?>
       $(window).load(function( ){
         $( '.pattern__code' ).hide( );

@@ -1,1 +1,4 @@
 settings/themes/*.ini
+.svn
+*/.svn
+*/*/.svn
