@@ -170,6 +170,9 @@ class Almagesq {
 	 *************************************************************************/
 	public function __construct( $themePath = NULL ) {
 		if ( ! is_null( $themePath ) ) {
+			if ( $themePath[ 0 ] !== '/' ) {
+				$themePath = __DIR__ . '/' . $this->themePath;
+			}
 			$this->themePath = $themePath;
 		}
 		$this->themes = $this->initThemes( );
@@ -181,7 +184,7 @@ class Almagesq {
 		$this->currentPattern = $this->initCurrentPattern( );
 	}
 	protected function initThemes( ) {
-		$themes = \UFile::fileList( __DIR__ . $this->themePath, '*.ini' );
+		$themes = \UFile::fileList( $this->themePath, '*.ini' );
 		if ( empty( $themes ) ) {
 			if ( ! $themes = realpath( __DIR__ . static::SETTINGS_PATH . '/default.ini' ) ) {
 				echo 'Settings file not found :\'(';
