@@ -13,7 +13,7 @@ class Almagesq {
 	/*************************************************************************
 	  ATTRIBUTES		   
 	 *************************************************************************/
-	public $themePath = '/../settings/themes';
+	public $themePath = '../settings';
 	public $patternPath;
 	public $menus = array( );
 	public $currentMenus = array( );
@@ -169,12 +169,7 @@ class Almagesq {
 	  CONSTRUCTOR METHODS				   
 	 *************************************************************************/
 	public function __construct( $themePath = NULL ) {
-		if ( ! is_null( $themePath ) ) {
-			if ( $themePath[ 0 ] !== '/' ) {
-				$themePath = __DIR__ . '/' . $this->themePath;
-			}
-			$this->themePath = $themePath;
-		}
+		$this->themePath = $this->initThemePath( $themePath );
 		$this->themes = $this->initThemes( );
 		$this->settings = $this->initSettings( );
 		$this->patternPath = $this->initPatternPath( );
@@ -182,6 +177,15 @@ class Almagesq {
 		$this->currentMenus = $this->initCurrentMenus( );
 		$this->patterns = $this->initPatterns( );
 		$this->currentPattern = $this->initCurrentPattern( );
+	}
+	protected function initThemePath( $themePath ) {
+		if ( is_null( $themePath ) ) {
+			$themePath = $this->themePath;
+		}
+		if ( $themePath[ 0 ] !== '/' ) {
+			$themePath = __DIR__ . '/' . $this->themePath;
+		}
+		return $themePath;
 	}
 	protected function initThemes( ) {
 		$themes = \UFile::fileList( $this->themePath, '*.ini' );
@@ -213,10 +217,9 @@ class Almagesq {
 		return $settings;
 	}
 	protected function initPatternPath( ) {
-		$basePath = __DIR__ . '/..';
-		$patternPath = $basePath . '/pattern';
+		$patternPath = __DIR__ . '/../pattern';
 		if ( isset( $this->settings[ 'pattern' ][ 'path' ] ) ) {
-			$patternPath = $basePath . '/' . $this->settings[ 'pattern' ][ 'path' ];
+			$patternPath = $this->themePath . '/' . $this->settings[ 'pattern' ][ 'path' ];
 		}
 		if ( ! $patternPath = realpath( $patternPath ) ) {
 			echo 'Pattern folder not found :\'(';
