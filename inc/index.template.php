@@ -114,12 +114,12 @@
         <div class="pattern" id="<?= $patternName ?>">
           <div class="pattern__title">
             <a href="#<?= $patternName ?>" class="pattern__link pattern__link--anchor">#</a>
-            <?= $patternHumanName ?>
             <div class="pull-right">
               <a href="#<?= $patternName ?>_copy" class="pattern__link pattern__link--copy">select code</a> |
               <a href="#<?= $patternName ?>_code" class="pattern__link pattern__link--code">view code</a> |
               <a href="<?= $iframeUrl ?>" class="pattern__link" target="_blank">open iframe</a>
             </div>
+            <?= $patternHumanName ?>
           </div>
           <div class="pattern__demo">
             <iframe src="<?= $iframeUrl ?>" frameBorder="0" marginWidth="0" marginHeight="0" scrolling="no" hspace="0" vspace="0">
