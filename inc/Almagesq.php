@@ -8,12 +8,12 @@ class Almagesq {
 	 *************************************************************************/
 	const MAX_DEPTH = 2;
 	const SETTINGS_PATH = '/../settings';
-	const USER_SETTINGS_PATH = '/../settings/themes';
 
 
 	/*************************************************************************
 	  ATTRIBUTES		   
 	 *************************************************************************/
+	public $themePath = '/../settings/themes';
 	public $patternPath;
 	public $menus = array( );
 	public $currentMenus = array( );
@@ -168,7 +168,10 @@ class Almagesq {
 	/*************************************************************************
 	  CONSTRUCTOR METHODS				   
 	 *************************************************************************/
-	public function __construct( ) {
+	public function __construct( $themePath = NULL ) {
+		if ( ! is_null( $themePath ) ) {
+			$this->themePath = $themePath;
+		}
 		$this->themes = $this->initThemes( );
 		$this->settings = $this->initSettings( );
 		$this->patternPath = $this->initPatternPath( );
@@ -178,7 +181,7 @@ class Almagesq {
 		$this->currentPattern = $this->initCurrentPattern( );
 	}
 	protected function initThemes( ) {
-		$themes = \UFile::fileList( __DIR__ . static::USER_SETTINGS_PATH, '*.ini' );
+		$themes = \UFile::fileList( __DIR__ . $this->themePath, '*.ini' );
 		if ( empty( $themes ) ) {
 			if ( ! $themes = realpath( __DIR__ . static::SETTINGS_PATH . '/default.ini' ) ) {
 				echo 'Settings file not found :\'(';

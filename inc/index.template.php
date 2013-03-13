@@ -109,7 +109,7 @@
         foreach ( $almagesq->patterns as $pattern ):
           $patternName = Almagesq::FileName( $pattern );
           $patternHumanName = Almagesq::FileHumanName( $patternName );
-          $iframeUrl = 'iframe.php' . $almagesq->getHttpQuery( ) . '&amp;pattern=' . $pattern;
+          $iframeUrl = $almagesq->getHttpQuery( ) . '&amp;iframe=1&amp;pattern=' . $pattern;
       ?>
         <div class="pattern" id="<?= $patternName ?>">
           <div class="pattern__title">
